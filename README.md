@@ -25,7 +25,7 @@ This generator also simulates a specified number of families over a specified nu
 ## Credits
 With the exception of the things stated below everything in this project was done by me:
 
-- There are some snippets of code from the built-in MCEdit filter "Topsoil" that I used to get a heightmap efficiently. I have clearly indicated when this is done in the code, but for the sake of clarity, it's mainly from line 466 to 487 and from line 738 to 751. Doing a bit of digging it looks like the "Topsoil" filter was developed by codewarrior0 whose GitHub you can check out [here](https://github.com/codewarrior0).
+- There are some snippets of code from the built-in MCEdit filter "Topsoil" that I used to get a heightmap efficiently. I have clearly indicated when this is done in the code, but for the sake of clarity, it's mainly from lines 466 to 487 and from lines 738 to 751. Doing a bit of digging it looks like the "Topsoil" filter was developed by codewarrior0 whose GitHub you can check out [here](https://github.com/codewarrior0).
 
 - I had a ton of help designing the actual structures found in the schematics from my classmate James Hudson whose GitHub you can check out [here](https://github.com/jhudson1998).
 
