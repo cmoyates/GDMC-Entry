@@ -1,3 +1,5 @@
+# Although there are three options that can be changed in the MCEdit GUI, I strongly recommend keeping them at their default values
+
 import random
 from numpy import zeros
 import itertools
@@ -419,7 +421,7 @@ inputs = (
     ("Cristopher Yates", "label"),
     ("Poisson Distribution", "label"),
     ("Radius: ", 28),
-    ("Families: ", 58),
+    ("Families: ", 48),
     ("Generations: ", 3),
 )
 
