@@ -1,1 +1,5 @@
 # GDMC-Entry
+
+This generator is an MCEdit filter (and several schematic files). Although there are three options that can be changed in the MCEdit GUI, I strongly recommend keeping them at their default values.
+This generator uses Poisson Disc Distribution to get a bunch of pseudo-random points in the selected area (that are a specified distance apart), then places a bunch of premade schematics at those points. While it's doing that it keeps track of all the positions of the entrances of all of the structures, and after they're all placed it connects them with an A* path. There are some building-specific randomizations to keep everything from looking completely identical, and some additional details such as streetlights and the path block changing when over water.
+This generator also simulates a specified number of families over a specified number of generations and generates certain details in the settlement accordingly (such as a cemetery that includes tombstones for all members of previous generations, family crests in the form of banners on each tombstone, and flags on each of the houses showing the family of the current inhabitants).
