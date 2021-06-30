@@ -437,19 +437,25 @@ def perform(level, box, options):
     tooBig = False
     center = None
     initialBox = None
+    offsetsForPathToSettlement = Vec2(0, 0)
     if (box.maxx - box.minx) > 256 or (box.maxz - box.minz) > 256:
         print("Too big!")
         tooBig = True
         # Pick a location to build the settlement
         halfXSize = (box.maxx - box.minx)/2
         halfZSize = (box.maxz - box.minz)/2
+        print("Half X: " + str(halfXSize) + ", Half Z: " + str(halfZSize))
         center = [halfXSize + box.minx, halfZSize + box.minz]
-        settlementPlacementOffset = Vec2(-1 * random.randint(128, halfXSize - 128), random.randint(128, halfZSize - 128))
-        settlementPlacementOffset.x += center[0]
-        settlementPlacementOffset.y += center[1]
+        settlementPlacementOffset = Vec2(box.minx, box.maxz-256)
+        if ((box.maxx - box.minx) > 512):
+            offsetsForPathToSettlement.x = random.randint(0, (box.maxx - box.minx)/2 - 245)
+            settlementPlacementOffset.x += offsetsForPathToSettlement.x
+        if ((box.maxz - box.minz) > 512):
+            offsetsForPathToSettlement.y = random.randint(0, (box.maxz - box.minz)/2 - 256)
+            settlementPlacementOffset.y -= offsetsForPathToSettlement.y
         # Place the settlement at the chosen location
         initialBox = box
-        box = BoundingBox((settlementPlacementOffset.x - 128, box.miny, settlementPlacementOffset.y - 128), (256, box.maxy, 256))
+        box = BoundingBox((settlementPlacementOffset.x, box.miny, settlementPlacementOffset.y), (256, box.maxy, 256))
         
 
 
@@ -724,9 +730,9 @@ def perform(level, box, options):
     print(str(personCounter) + " Houses in total")
 
     # Place the path from the center of the map to the settlement if need be
-    if tooBig:
-        # Calculate the bounding box for the area where the path will be made
-        anotherBox = BoundingBox(((northEastPos[0]+box.minx)-1, box.miny, center[1]-1), (center[0]-(northEastPos[0]+box.minx)+2, box.maxy, (northEastPos[1]+box.minz)-center[1]+2))
+    if tooBig and ((initialBox.maxx - initialBox.minx)-offsetsForPathToSettlement.x > 512 or (initialBox.maxz - initialBox.minz)-offsetsForPathToSettlement.y > 512):
+        # Create a bounding box with the same dimensions and position as the initial box
+        anotherBox = initialBox
         print("Min Point: X: " + str(anotherBox.minx) + ", Z: " + str(anotherBox.minz))
         print("Size: X: " + str(anotherBox.maxx - anotherBox.minx) + ", Z: " + str(anotherBox.maxz - anotherBox.minz))
         # Reset some stuff used earlier
@@ -765,8 +771,8 @@ def perform(level, box, options):
         
         # Find the path from the center of the initial selection to the north-east point of the settlement
         pathfindingGrid = np.zeros([abs(anotherBox.maxx - anotherBox.minx), abs(anotherBox.maxz - anotherBox.minz)])
-        newStart = [anotherBox.maxx-anotherBox.minx-2, 1]
-        newGoal = [1, anotherBox.maxz-anotherBox.minz-2]
+        newStart = [(anotherBox.maxx - anotherBox.minx)/2, (anotherBox.maxz - anotherBox.minz)/2]
+        newGoal = [256 + offsetsForPathToSettlement.x, anotherBox.maxz - anotherBox.minz - 256 - offsetsForPathToSettlement.y]
         path = aStar(level, anotherBox, newStart, newGoal, pathfindingGrid, completeHeightmap)
         # For every block in the path (except the last few) place blocks on the ground in a 3x3 centered around it
         for i in xrange(1, len(path)-5):
